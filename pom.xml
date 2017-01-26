@@ -1,40 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project>
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
 
-    <groupId>virtual-life-coach</groupId>
-    <artifactId>server-storage</artifactId>
-    <version>1.0</version>
+    <groupId>com.example.echo</groupId>
+    <artifactId>echo</artifactId>
+
 
     <properties>
-        <appengine.version>1.9.48</appengine.version>
-        <appengine.maven.plugin.version>1.0.0</appengine.maven.plugin.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
-        <archiveClasses>true</archiveClasses>
-        <objectify.version>5.1.13</objectify.version>
-        <guava.version>18.0</guava.version>
-        <endpoints.framework.version>2.0.0-beta.7</endpoints.framework.version>
-        <endpoints.management.version>1.0.0-beta.7</endpoints.management.version>
-    </properties>
+        <appengine.sdk.version>1.9.48</appengine.sdk.version>
+        <appengine.app.version>1</appengine.app.version>
 
-    <prerequisites>
-        <maven>3.3.9</maven>
-    </prerequisites>
+        <project.http.version>1.19.0</project.http.version>
+        <project.oauth.version>1.19.0</project.oauth.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <endpoints.framework.version>2.0.0</endpoints.framework.version>
+        <endpoints.management.version>1.0.1</endpoints.management.version>
+
+        <endpoints.project.id>vlc-server-storage</endpoints.project.id>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <appengine.maven.plugin.version>1.0.0</appengine.maven.plugin.version>
+    </properties>
 
     <dependencies>
         <!-- Compile/runtime dependencies -->
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>${appengine.version}</version>
+            <version>${appengine.sdk.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <!-- Compile/runtime dependencies -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -42,32 +47,63 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>jstl</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
+            <groupId>com.google.endpoints</groupId>
+            <artifactId>endpoints-framework</artifactId>
+            <version>${endpoints.framework.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.10</version>
-        </dependency>
-        <!--<dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>2.24</version>
+            <groupId>com.google.endpoints</groupId>
+            <artifactId>endpoints-management-control-appengine</artifactId>
+            <version>${endpoints.management.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <version>2.24</version>
+            <groupId>com.google.endpoints</groupId>
+            <artifactId>endpoints-framework-auth</artifactId>
+            <version>${endpoints.management.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>2.24</version>
-        </dependency>-->
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>GetSwaggerDoc</id>
+            <activation>
+                <property>
+                    <name>GetSwaggerDoc</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <configuration>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <mainClass>com.google.api.server.spi.tools.EndpointsTool</mainClass>
+                            <arguments>
+                                <argument>get-swagger-doc</argument>
+                                <argument>--hostname=echo-api.endpoints.${endpoints.project.id}.cloud.goog</argument>
+                                <argument>--war=target/echo-1.0-SNAPSHOT</argument>
+                                <argument>com.example.echo.Echo</argument>
+                            </arguments>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.google.endpoints</groupId>
+                                <artifactId>endpoints-framework-tools</artifactId>
+                                <version>${endpoints.framework.version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.google.appengine</groupId>
+                                <artifactId>appengine-api-1.0-sdk</artifactId>
+                                <version>1.9.30</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <!-- for hot reload of the web application-->
@@ -76,7 +112,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.3</version>
+                <version>2.2</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -91,11 +127,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version> <!-- required for Eclipse Mars -->
+                <version>2.6</version>
                 <configuration>
-                    <archiveClasses>true</archiveClasses>
                     <webResources>
-                        <!-- in order to interpolate version from pom into appengine-web.xml -->
                         <resource>
                             <directory>${basedir}/src/main/webapp/WEB-INF</directory>
                             <filtering>true</filtering>
@@ -109,7 +143,6 @@
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
                 <version>${appengine.maven.plugin.version}</version>
-                <configuration/>
             </plugin>
         </plugins>
     </build>
