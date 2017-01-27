@@ -1,4 +1,4 @@
-package com.example.echo;
+package rest;
 
 import com.google.api.server.spi.ServiceException;
 import com.google.api.server.spi.config.Api;
@@ -16,12 +16,16 @@ import java.util.List;
 @Api(
         name = "entity",
         version = "v1",
-        namespace = @ApiNamespace(ownerDomain = "echo.example.com", ownerName = "echo.example.com", packagePath = "")
+        namespace = @ApiNamespace(
+                ownerDomain = "vlc-server-storage",
+                ownerName = "vlc-server-storage",
+                packagePath = ""
+        )
 )
 public class Entity {
 
     /**
-     * POST method
+     * POST method.
      *
      * @param entity entity to create
      * @return entity created
@@ -36,7 +40,7 @@ public class Entity {
     }
 
     /**
-     * GET method
+     * GET method.
      *
      * @param id entity id to retrieve
      * @return entity retrieved
@@ -51,7 +55,7 @@ public class Entity {
     }
 
     /**
-     * PUT method
+     * PUT method.
      *
      * @param entity entity to update
      * @throws ServiceException on malformed requests or back end error
@@ -64,7 +68,7 @@ public class Entity {
     }
 
     /**
-     * DELETE method
+     * DELETE method.
      *
      * @param id entity id to delete
      * @throws ServiceException on malformed requests or back end error
@@ -78,7 +82,7 @@ public class Entity {
     }
 
     /**
-     * LIST method. Equivalent of multiple GETs
+     * LIST method. Equivalent of multiple GETs.
      *
      * @return all the entities
      * @throws ServiceException on malformed requests or back end error

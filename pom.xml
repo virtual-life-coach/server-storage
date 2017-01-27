@@ -1,60 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>virtual-life-coach</groupId>
         <artifactId>parent</artifactId>
         <version>1.0</version>
     </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <packaging>war</packaging>
-
     <artifactId>server-storage</artifactId>
     <version>1.0</version>
-
-    <prerequisites>
-        <maven>3.3.9</maven>
-    </prerequisites>
+    <packaging>war</packaging>
 
     <properties>
         <appengine.sdk.version>1.9.48</appengine.sdk.version>
         <appengine.app.version>1</appengine.app.version>
-
-        <project.http.version>1.19.0</project.http.version>
-        <project.oauth.version>1.19.0</project.oauth.version>
-
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <endpoints.framework.version>2.0.0</endpoints.framework.version>
-        <endpoints.management.version>1.0.1</endpoints.management.version>
+        <appengine.maven.plugin.version>1.0.0</appengine.maven.plugin.version>
 
         <endpoints.project.id>vlc-server-storage</endpoints.project.id>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <appengine.maven.plugin.version>1.0.0</appengine.maven.plugin.version>
+        <endpoints.framework.version>2.0.0</endpoints.framework.version>
+        <endpoints.management.version>1.0.1</endpoints.management.version>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>virtual-life-coach</groupId>
             <artifactId>common</artifactId>
             <version>1.0</version>
         </dependency>
 
-        <!-- Compile/runtime dependencies -->
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
             <version>${appengine.sdk.version}</version>
         </dependency>
-        <dependency>
-            <groupId>jstl</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -62,16 +41,19 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.google.endpoints</groupId>
             <artifactId>endpoints-framework</artifactId>
             <version>${endpoints.framework.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.endpoints</groupId>
             <artifactId>endpoints-management-control-appengine</artifactId>
             <version>${endpoints.management.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.endpoints</groupId>
             <artifactId>endpoints-framework-auth</artifactId>
@@ -79,6 +61,11 @@
         </dependency>
     </dependencies>
 
+    <!--
+    Profile used to generate Google Cloud Endpoints JSON descriptor (openapi.json)
+    Invoke it by running:
+    $ mvn exec:java -DGetSwaggerDoc
+    -->
     <profiles>
         <profile>
             <id>GetSwaggerDoc</id>
@@ -100,7 +87,7 @@
                                 <argument>get-swagger-doc</argument>
                                 <argument>--hostname=server-storage-api.endpoints.${endpoints.project.id}.cloud.goog</argument>
                                 <argument>--war=target/server-storage-1.0</argument>
-                                <argument>com.example.echo.Entity</argument>
+                                <argument>rest.Entity</argument>
                             </arguments>
                         </configuration>
                         <dependencies>
