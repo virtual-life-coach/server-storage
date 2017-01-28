@@ -1,4 +1,4 @@
-package rest;
+package vlc.ss.rest;
 
 import com.google.api.server.spi.ServiceException;
 import com.google.api.server.spi.config.Api;
