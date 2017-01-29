@@ -6,7 +6,7 @@
         <servlet-class>com.google.api.server.spi.EndpointsServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>vlc.ss.rest.Entity</param-value>
+            <param-value>vlc.ss.rest.Receipt</param-value>
         </init-param>
     </servlet>
 
@@ -14,6 +14,17 @@
         <servlet-name>EndpointsServlet</servlet-name>
         <url-pattern>/_ah/api/*</url-pattern>
     </servlet-mapping>
+
+    <!-- Objectify (Datastore) -->
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!-- add a filter that fetches the service config from service management -->
     <filter>
