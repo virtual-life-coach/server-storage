@@ -22,7 +22,7 @@ import vlc.ss.dao.EntityDAO;
 public class Receipt {
 
     /**
-     * GET method.
+     * GET method. Retrieve a random receipt.
      *
      * @return receipt retrieved
      * @throws ServiceException on malformed requests or back end error
